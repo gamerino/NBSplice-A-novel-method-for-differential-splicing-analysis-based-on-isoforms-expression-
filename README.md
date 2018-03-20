@@ -48,8 +48,8 @@ Installation of the following software is necessary:
 
 Installation of the following R packages is required:
 
-- NBSplice(https://github.com/gamerino/NBSplice)
-- Limma(http://bioconductor.org/packages/Limma/)
+- NBSplice (https://github.com/gamerino/NBSplice)
+- Limma (http://bioconductor.org/packages/Limma/)
 - DEXSeq (http://bioconductor.org/packages/DEXSeq/)
 - edgeR (https://bioconductor.org/packages/edgeR/)
 - BiocParallel (http://bioconductor.org/packages/BiocParallel/)
