@@ -1,7 +1,7 @@
 # NBSplice: A novel method for differential splicing analysis based on isoforms expression.
 Code for generation of simulated RNA-seq datasets, NBSplice evaluation and comparison with commonly-used R packages for differential splicing detection.
 
-Merino, G.A. & Fernández, E.A. (2018). NBSplice: A novel method for differential splic-ing analysis based on isoforms expression.
+Merino, G.A. & Fernández, E.A. (2018). NBSplice: A novel method for differential splicing analysis based on isoforms expression.
 
 The aim of our work was to develop an R package able to predict isoform relative expression and its change to infer differential gene alternative splicing. Our study presented the evaluation of the developed tool, based on simulated RNA-seq dataset generated from a real experiment. 
 
