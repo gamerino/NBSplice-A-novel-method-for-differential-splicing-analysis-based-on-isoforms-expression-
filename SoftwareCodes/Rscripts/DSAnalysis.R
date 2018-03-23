@@ -188,7 +188,7 @@ designMatrix<-data.frame(samples=colnames(iso_cm), condition=factor(c(rep(
 rownames(designMatrix)<-designMatrix$samples
 
 myIsoDataSet<-IsoDataSet(iso_cm,designMatrix, colName="condition", geneIso, BPPARAM)
-myIsoDataSet<-buildLowExpIdx(myIsoDataSet, BPPARAM)
+myIsoDataSet<-buildLowExpIdx(myIsoDataSet, BPPARAM=BPPARAM)
 
 myNBResults<-NBTest(myIsoDataSet, test="F", BPPARAM=BPPARAM)
 
