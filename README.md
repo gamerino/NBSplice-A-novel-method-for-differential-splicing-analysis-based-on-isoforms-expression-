@@ -42,6 +42,12 @@ Installation of the following software is necessary:
 
 - SRA toolkit (http://www.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=software)
 
+- Bowtie (http://bowtie-bio.sourceforge.net/index.shtml)
+
+- Samtools (http://www.htslib.org/download/)
+
+- RSEM (http://deweylab.biostat.wisc.edu/rsem/)
+
 - STAR (https://github.com/alexdobin/STAR)
 
 - KALLISTO (https://github.com/pachterlab/kallisto)
