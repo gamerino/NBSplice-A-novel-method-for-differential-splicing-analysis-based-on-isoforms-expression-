@@ -33,7 +33,7 @@ The `iso_info-tab` file is a matrix containing isoform information. The specifie
   
 The `gene2transc.txt` file contains the gene-isoform relationship used here.
 
-Each folder called `simX` (X=1,2,..,10) contains the simulation files obtained for each experiment replication. The `iso_cm_sim.RData` R dataset contains the simualted expression matrix at the isoform level with the samples in columns following the order: 'SRR057649',
-'SRR057650', 'SRR057651', 'SRR057652', 'SRR057631', 'SRR057643', 'SRR057645','SRR057648'. The `X_sim_iso.results` are the RSEM quantification files with the simulated profiles for each sample, whereas the `expressionMatrixSimX.RData` are the expression matrices quantified by Kallisto after simulation.
+Each folder called `simX` (X=1,2,..,10) contains the simulation files obtained for each experiment replication. The `iso_cm_sim.RData` R dataset contains the simulated expression matrix at the isoform level with the samples in columns following the order: 'SRR057649',
+'SRR057650', 'SRR057651', 'SRR057652', 'SRR057631', 'SRR057643', 'SRR057645','SRR057648'. The `X_sim_iso.results` is the RSEM quantification file with the simulated profiles for each sample, whereas the `expressionMatrixSimX.RData` are the expression matrices quantified by Kallisto after simulation.
   
  
