@@ -1,9 +1,9 @@
 ## Differential splicing analysis based on isoform expression with NBSplice. 
 Code for generation of simulated RNA-seq datasets, NBSplice evaluation and comparison with commonly-used R packages for differential splicing detection.
 
-Merino, G.A. & Fernández, E.A. (2018). Differential splicing analysis based on isoform expression with NBSplice.
+Merino, G.A. & Fernández, E.A. (2019). Differential splicing analysis based on isoforms expression with NBSplice.
 
-The aim of our work was to develop an R package able to predict isoform relative expression and its change to infer differential gene alternative splicing. Our study presented the evaluation of the developed tool, based on simulated RNA-seq dataset generated from a real experiment. 
+NBSplice is an R package able to predict isoform relative expression and its change to infer differential gene alternative splicing. Our study presents the evaluation of the developed tool using a simulated RNA-seq database. This synthetic data was generated from a real RNA-seq experiment where expression profiles were modified to controll the differential splicing patterns of genes. 
 
 The structure of this repository is as follows:
 
@@ -55,9 +55,8 @@ Installation of the following software is necessary:
 Installation of the following R packages is required:
 
 - NBSplice (https://github.com/gamerino/NBSplice)
-- Limma (http://bioconductor.org/packages/Limma/)
 - DEXSeq (http://bioconductor.org/packages/DEXSeq/)
-- edgeR (https://bioconductor.org/packages/edgeR/)
+- DRIMSeq (https://bioconductor.org/packages/DRIMSeq/)
 - BiocParallel (http://bioconductor.org/packages/BiocParallel/)
 
 
