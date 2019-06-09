@@ -44,9 +44,6 @@ mclapply(1:n, function(n.sim){
     # computing average expression for each isoform along replicates
     iso_info$iso_meanC1<-rowMeans(iso_cm[,1:4])
     iso_info$iso_meanC2<-rowMeans(iso_cm[,5:8])
-    # identifiyng the genes simulated as differentially spliced
-    DSgenes<-unique(iso_info[ iso_info$DS  | iso_info$DIEDS , "gene_id"])
-    id_mayorDS<-as.character(g2t_ok$transcript_id[g2t_ok$gene_id %in% DSgenes & iso_info$mayor])
     # saving the full-matrix containing information about simulated status of each gene and its isoforms of replication n.sim
     save(iso_info, file=paste("iso_info_final_sim", n.sim,".RData", sep=""), compress="xz")
     # saving the simulated expression matrix of replication n.sim
