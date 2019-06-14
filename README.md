@@ -11,9 +11,6 @@ The structure of this repository is as follows:
   - bash_scripts: Directory containing the scripts used for processing RNA-seq data 
   - R_scripts: Directory having the R scripts used to perform differential splicing analysis
 
-- AnalysisCode
-  - R_scripts: Directory containing the code used to perform the comparative analysis
-  
 - Data: Simulated isoform expression matrices
 
 Each directory contain a README and a HOWTO file. 
