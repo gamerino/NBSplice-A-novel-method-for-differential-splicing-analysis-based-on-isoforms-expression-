@@ -1,5 +1,5 @@
-## Differential splicing analysis based on isoform expression with NBSplice. 
-Code for generation of simulated RNA-seq datasets, NBSplice evaluation and comparison with commonly-used R packages for differential splicing detection.
+## Differential splicing analysis based on isoform expressions with NBSplice. 
+This repository has the code for generation of simulated RNA-seq datasets, NBSplice evaluation and comparison with commonly-used R packages for differential splicing detection.
 
 Merino, G.A. & Fernández, E.A. (2019). Differential splicing analysis based on isoforms expression with NBSplice.
 
@@ -13,6 +13,8 @@ The structure of this repository is as follows:
 
 - AnalysisCode
   - R_scripts: Directory containing the code used to perform the comparative analysis
+  
+- Data: Simulated isoform expression matrices
 
 Each directory contain a README and a HOWTO file. 
 
