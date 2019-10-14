@@ -127,6 +127,26 @@ mclapply(1:n, function(n.sim){
     DSRes2 <- NBSplice::results(myDSRes2, filter=FALSE)
     genesEval2<-unique(DSRes2[,c("gene", "geneFDR")])
     
+    ## RATs ##
+    ## Since RATs performs different tests at both the gene and transcript levels, 
+    # each FDR threshold was specified in a separate way
+    tpm <- fish4rodents(A_paths=file.path(paste('./kallisto_SRR0576', c('49','50','51','52'), sep="")),
+    B_paths=file.path(paste('./kallisto_SRR0576', c('31','43','45','48'), sep="")),
+    annot=geneIso,threads=1L)
+    qrep_thresh=0.95
+    ## FDR 0.05
+    dtu_RAT<-call_DTU(annot=geneIso, boot_data_A=tpm[[1]], boot_data_B=tpm[[2]],
+    qbootnum=100, qrep_thresh=qrep_thresh, threads=4L,
+    varname="condition", name_A="Control", name_B="Treatment")
+    ## FDR 0.1
+    dtu_RAT01<-call_DTU(annot=geneIso, boot_data_A=tpm[[1]], boot_data_B=tpm[[2]],
+    p_thresh =0.1,qbootnum=100, qrep_thresh=qrep_thresh, threads=4L,
+    varname="condition", name_A="Control", name_B="Treatment")
+    ## FDR 0.01
+    dtu_RAT001<-call_DTU(annot=geneIso, boot_data_A=tpm[[1]], boot_data_B=tpm[[2]],
+    p_thresh =0.01,qbootnum=100, qrep_thresh=qrep_thresh, threads=4L,
+    varname="condition", name_A="Control", name_B="Treatment")
+    
     padj.gene <- data.frame(row.names=unique(iso_info$gene_id[which(!is.na(iso_info$transcript_id))]))
     # NBSplice filtering
     padj.gene$DRIMSeq <- res$adj_pvalue[match(rownames(padj.gene), res$gene_id)]
@@ -136,6 +156,21 @@ mclapply(1:n, function(n.sim){
     padj.gene$DRIMSeq2 <- res2$adj_pvalue[match(rownames(padj.gene), res2$gene_id)]
     padj.gene$DEXSeq2 <- dxr.g2$qval[match(rownames(padj.gene), dxr.g2$gene)]
     padj.gene$NBSplice2 <- genesEval2$geneFDR[match(rownames(padj.gene), genesEval2$gene)]
+    # FDR 0.05
+    pvalsRat<-dtu_RAT$Genes$pval_corr
+    names(pvalsRat)<-dtu_RAT$Genes$parent_id 
+    pvalsRat[!dtu_RAT$Genes$DTU]<-1 # to summarize DTU in a single column
+    padj.gene$RAT=pvalsRat[match(rownames(padj.gene), names(pvalsRat))]
+    # FDR 0.1
+    pvalsRat<-dtu_RAT01$Genes$pval_corr
+    names(pvalsRat)<-dtu_RAT01$Genes$parent_id
+    pvalsRat[!dtu_RAT01$Genes$DTU]<-1 # to summarize DTU in a single column
+    padj.gene$RAT_01=pvalsRat[match(rownames(padj.gene), names(pvalsRat))]
+    # FDR 0.01
+    pvalsRat<-dtu_RAT001$Genes$pval_corr
+    names(pvalsRat)<-dtu_RAT001$Genes$parent_id
+    pvalsRat[!dtu_RAT001$Genes$DTU]<-1 # to summarize DTU in a single column
+    padj.gene$RAT_001=pvalsRat[match(rownames(padj.gene), names(pvalsRat))]
 
     # defining the true state of each gene
     truth<-data.frame(status=as.numeric(rownames(padj.gene) %in% DSgenes),
@@ -154,6 +189,8 @@ mclapply(1:n, function(n.sim){
                                 thrs=c(.01,.05,.1))
     df<-cp@fdrtpr
     save(df, file=paste("CobraPerfDTUMethodsFiltSwimmSim", n.sim, "RData", sep=""), compress = "xz")
-    
+    ## Although the FDR thresholds are applied for the three RATs analysis, only will be considered those
+    ## corresponding to the desired FDR, i.e, for dtu_RAT001 we only analyze the results of calculate_performance
+    ## for 0.01 FDR threshold.
 }, mc.cores=16)
 
