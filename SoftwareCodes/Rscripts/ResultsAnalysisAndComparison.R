@@ -326,31 +326,49 @@ for (i in 1:length(subGro)){
                       exact=F, paired=T)$p.value,3), sep=""))
     }}}
     
-#######################################################
-## NBSplice, DEXSeq, and DRIMSeq results' comparison ##
-#######################################################
+############################################################
+## NBSplice, DEXSeq, DRIMSeq and RATs results' comparison ##
+############################################################
 
 n<-10
-load("sim1/CobraPerfDTUMethodsFiltSwimmSim1RData")
+load("sim1/CobraPerfDTUMethodsFiltSwimmWithRat_3_Sim1.RData")
 df$method<-factor(df$method)
 dfAll<-df
 dfAll$sim<-1
 
 for(i in 2:n){
-    load(paste("sim", i, "/CobraPerfDTUMethodsFiltSwimmSim",i,"RData", sep=""))
+    load(paste("sim", i, "/CobraPerfDTUMethodsFiltSwimmWithRat_3_Sim",i,".RData", sep=""))
     df$sim<-i
     df$method<-factor(df$method)
     dfAll<-rbind(dfAll, df)
 }
 dfAll$sim<-factor(dfAll$sim)
 levels(dfAll$sim)<-paste("sim",1:10, sep="")
+## Correcting RATs results to match FDR threshold impossed during DTU calling and used by iCOBRA
+toRemove<-which((dfAll$method=="RAT" & dfAll$thr != "thr0.05") | 
+                    (dfAll$method=="RAT_001" & dfAll$thr != "thr0.01") |
+                    (dfAll$method=="RAT_01" & dfAll$thr != "thr0.1"))
+dfAll<-dfAll[-toRemove,]
+toModify<-which(dfAll$method %in% c("RAT_001", "RAT_01"))
+dfAll$method[toModify]<-"RAT"
+dfAll$method<-factor(as.character(dfAll$method))
+dfAll$basemethod<-dfAll$method
+dfAll$fullmethod<-paste(dfAll$method, "_overall", sep="")
+dfAll$method.satis<-paste(dfAll$fullmethod, dfAll$satis, sep="")
+
 dfAll$FNAll<-dfAll$TP/dfAll$TPR-dfAll$TP
 dfAll$Fscore<-2*dfAll$TP/(2*dfAll$TP+dfAll$FP+dfAll$FNAll)
 dfAll$TNAll<-12602-dfAll$TP-dfAll$FNAll-dfAll$FP
 
 dfAll$Acc<-(dfAll$TP+dfAll$TNAll)/12602
-levels(dfAll$method)<-c("DEXSeq:rT=0.01;cT=1","DEXSeq:SwimmF","DRIMSeq:rT=0.01;cT=1","DRIMSeq:SwimmF","NBSplice:rT=0.01;cT=1","NBSplice:SwimmF")
-
+levels(dfMean$method)<-c("DEXSeq:rT=0.01;cT=1","DEXSeq:SwimmF",
+                         "DRIMSeq:rT=0.01;cT=1","DRIMSeq:SwimmF",
+                         "NBSplice:rT=0.01;cT=1","NBSplice:SwimmF", "RATs")
+plotcolors<-c("DEXSeq:rT=0.01;cT=1"="blue","DEXSeq:SwimmF"="deepskyblue3",
+              "DRIMSeq:rT=0.01;cT=1"="green4","DRIMSeq:SwimmF"="olivedrab3",
+              "NBSplice:rT=0.01;cT=1"="firebrick3","NBSplice:SwimmF"="hotpink1", 
+              "RATs"="darkorchid1")
+plotFillColors<-c(plotcolors, "no"="white")
 thresholds<-c(0.01,0.05,0.1)
 levels(dfAll$thr)<-thresholds
 # Figure 4
@@ -384,7 +402,9 @@ dfMean$satis<-dfMean$FDR<=(as.numeric(do.call(c, lapply(as.character(dfMean$thr)
 dfMean$satis[dfMean$satis]<-"yes"
 dfMean$satis[dfMean$satis=="FALSE"]<-"no"
 dfMean$method<-as.factor(dfMean$method)
-levels(dfMean$method)<-c("DEXSeq:rT=0.01;cT=1","DEXSeq:SwimmF","DRIMSeq:rT=0.01;cT=1","DRIMSeq:SwimmF","NBSplice:rT=0.01;cT=1","NBSplice:SwimmF")
+levels(dfMean$method)<-c("DEXSeq:rT=0.01;cT=1","DEXSeq:SwimmF",
+                         "DRIMSeq:rT=0.01;cT=1","DRIMSeq:SwimmF",
+                         "NBSplice:rT=0.01;cT=1","NBSplice:SwimmF", "RATs")
 dfMean$method.satis<-paste0(dfMean$satis)
 dfMean$method.satis[dfMean$method.satis=="yes"]<-as.character(dfMean$method[dfMean$method.satis=="yes"])
 dfMean$method.satis<-as.factor(dfMean$method.satis)
@@ -392,9 +412,6 @@ dfMean$method.satis<-as.factor(dfMean$method.satis)
 
 nthr<-length(levels(dfMean$thr))
 nlevs <- length(unique(dfMean$method))
-plotcolors<-c("DEXSeq:rT=0.01;cT=1"="blue","DEXSeq:SwimmF"="deepskyblue3","DRIMSeq:rT=0.01;cT=1"="green4","DRIMSeq:SwimmF"="olivedrab3","NBSplice:rT=0.01;cT=1"="firebrick3","NBSplice:SwimmF"="hotpink1")
-plotFillColors<-c(plotcolors, "no"="white")
-thresholds<-c(0.01,0.05,0.1)
 levels(dfMean$thr)<-thresholds
 dfMean$satis<-as.factor(dfMean$satis)
 
@@ -419,7 +436,7 @@ for(i in meth){
     }
 }
 
-for(i in c("DEXSeq:rT=0.01;cT=1", "DRIMSeq:rT=0.01;cT=1" )){
+for(i in c("DEXSeq:rT=0.01;cT=1", "DRIMSeq:rT=0.01;cT=1", "RATs" )){
         print(paste("Acc: NBSplice:rT=0.01;cT=1 vs", i, wilcox.test(dfAux$Acc[dfAux$method=="NBSplice:rT=0.01;cT=1"], dfAux$Acc[dfAux$method==i], exact=F, paired=T, alternative="greater")$p.value,sep=" "))
         print(paste("Sen: NBSplice:rT=0.01;cT=1 vs", i,wilcox.test(dfAux$TPR[dfAux$method=="NBSplice:rT=0.01;cT=1"], dfAux$TPR[dfAux$method==i], exact=F, paired=T, alternative="greater")$p.value,sep=" "))
         print(paste("Pre: NBSplice:rT=0.01;cT=1 vs", i,wilcox.test(1-dfAux$FDR[dfAux$method=="NBSplice:rT=0.01;cT=1"], 1-dfAux$FDR[dfAux$method==i], exact=F, paired=T, alternative="greater")$p.value,sep=" "))
