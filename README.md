@@ -56,6 +56,7 @@ Installation of the following R packages is required:
 - NBSplice (https://github.com/gamerino/NBSplice)
 - DEXSeq (http://bioconductor.org/packages/DEXSeq/)
 - DRIMSeq (https://bioconductor.org/packages/DRIMSeq/)
+- RATs (https://github.com/bartongroup/RATS)
 - BiocParallel (http://bioconductor.org/packages/BiocParallel/)
 
 
